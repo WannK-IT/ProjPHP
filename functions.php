@@ -1,25 +1,24 @@
 <?php
+function checkEmpty($data){
+    $flag = false;
+    if(empty($data)){
+        $flag = true;
+    }
+    return $flag;
+}
 
-function checkError_Input($data, $type, $errorMessage){
-    $arrError = [];
+function checkLength($data, $min, $max){
+    $length = strlen($data);
+    $flag = false;
     if(!empty($data)){
-        switch ($type) {
-            case 'text':
-                if(is_string($data)) $arrError['text'] .= $errorMessage;
-                break;
-
-            case 'email':
-                if(!filter_var($data, FILTER_VALIDATE_EMAIL)) $arrError[] .= $errorMessage;
-                break;
-
-            case 'password':
-                /** Dùng jquery hiển thị tips nhập password
-                 * mk phải có chữ cái đầu tiên viết hoa
-                 * mk phải trong khoảng [5 - 20] ký tự
-                 * mk phải có ít nhất 1 số
-                 */
-                
-
+        if($length < $min || $length > $max){
+            $flag = true;
         }
     }
+    return $flag;
+}
+
+function parseFileIni(){
+    $data = parse_ini_file('config/config.ini');
+    return $data;
 }

@@ -3,7 +3,7 @@ class Database
 {
     protected $connect;
 
-    // khởi tạo kết nối
+    // Create connect
     public function __construct()
     {
         if(!isset($this->connect)){
@@ -24,5 +24,9 @@ class Database
         return $result;
     }
 
+    //close database
+    public function __destruct(){
+        mysqli_close($this->connect);
+    }
     
 }
