@@ -75,15 +75,15 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
         $sql = "SELECT * FROM `user` WHERE `username` = '" . $userName . "' ";
         $resultSQL = $db->query($sql);
         if (mysqli_num_rows($resultSQL)) {       // If return result => exist Username
-            $_SESSION['existUsername'] = 'Tên đăng nhập đã tồn tại';
+            $_SESSION['existUsername'] = 'Tên đăng nhập đã tồn tại!';
             mysqli_free_result($resultSQL);
             header("Location: register.php");
             exit();
         } else {
             $passWord = md5($passWord);
-            $query = "INSERT INTO `user`(`name`, `username`, `email`, `password`) VALUES ('$name', '$userName', '$email', '$passWord')";
+            $query = "INSERT INTO `user`(`name`, `username`, `email`, `password`) VALUES ('".$name."', '".$userName."', '".$email."', '".$passWord."')";
             $db->query($query);
-            $_SESSION['Register_success'] = 'Đăng ký thành công';
+            $_SESSION['Register_success'] = 'Đăng ký thành công!';
             mysqli_free_result($resultSQL);
             header("Location: login.php");
             exit();
@@ -110,7 +110,7 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
         <div class="row">
             <div class="col-md-4 offset-md-4">
                 <div class="login-form bg-light mt-5 p-4" style="border-radius: 25px; border: 3px solid rgba(0, 0, 0, .5);">
-                    <form action="" method="POST" class="row g-3">
+                    <form method="POST" class="row g-3">
                         <h1 class="text-center font-monospace fw-bold">Quizz App</h1>
                         <h5 class="text-center font-arial text-muted">Tạo tài khoản Quizz App ngay!</h5>
                         <div class="col-12">

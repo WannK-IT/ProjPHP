@@ -30,7 +30,8 @@ if (isset($_POST['user_name']) && isset($_POST['pass_word'])) {
     // Connect DB, Check info user in DB
     if (checkEmpty($error)) {
         $db = new Database();
-        $sql = "SELECT * FROM `user` WHERE `username` = '$userName' AND `password` = '$passWord'";
+        $passWord = md5($passWord);
+        $sql = "SELECT * FROM `user` WHERE `username` = '".$userName."' AND `password` = '".$passWord."' ";
         $resultSQL = $db->query($sql);
 
         if (mysqli_num_rows($resultSQL)) {       // If return resultSQL => redirect to page index.php
@@ -38,7 +39,7 @@ if (isset($_POST['user_name']) && isset($_POST['pass_word'])) {
             header("Location: index.php");
             exit();
         } else {
-            $_SESSION['loginFail'] = 'Tên đăng nhập hoặc mật khẩu chưa chính xác.';
+            $_SESSION['loginFail'] = 'Tên đăng nhập hoặc mật khẩu chưa chính xác!';
             mysqli_free_result($resultSQL);
             header("Location: login.php");
             exit();
@@ -63,12 +64,17 @@ if (isset($_POST['user_name']) && isset($_POST['pass_word'])) {
         <div class="row">
             <div class="col-md-4 offset-md-4">
                 <div class="login-form bg-light mt-5 p-4" style="border-radius: 25px; border: 3px solid rgba(0, 0, 0, .5);">
-                    <form action="#" method="POST" class="row g-3">
+                    <form method="POST" class="row g-3">
                         <h1 class="text-center font-monospace fw-bold">Quizz App</h1>
                         <h5 class="text-center font-arial text-muted">Welcome Back !</h5>
                         <div class="col-12">
                             <?php
                             //If exist this session => show alert(register_success)
+                            if (isset($_SESSION['Register_success'])) {
+                                echo '<div style="position: absolute; top: 10px; right: 10px" class="alert alert-success" id="register_success" role="alert">' . $_SESSION['Register_success'] . '</div>';
+                            }
+
+                            //If exist this session => show alert(loginFail)
                             if (isset($_SESSION['loginFail'])) {
                                 echo '<div style="position: absolute; top: 10px; right: 10px" class="alert alert-danger" id="loginFail" role="alert">' . $_SESSION['loginFail'] . '</div>';
                             }
@@ -121,8 +127,8 @@ if (isset($_POST['user_name']) && isset($_POST['pass_word'])) {
         $('[data-toggle="tooltip"]').tooltip();
 
         // Fade Alert
-        $("#loginFail").fadeTo(3000, 500).slideUp(500, function() {
-            $("#loginFail").slideUp(500);
+        $("#loginFail, #register_success").fadeTo(3000, 500).slideUp(500, function() {
+            $("#loginFail, #register_success").slideUp(500);
         });
     });
 </script>

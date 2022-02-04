@@ -4,6 +4,8 @@
 <body>
     <div class="main">
         <p>trang index</p>
+        <a href="login.php">Login</a><br>
+        <a href="register.php">Register</a>
     </div>
 </body>
 </html>
