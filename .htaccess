@@ -1,0 +1,12 @@
+# chống view folder data
+# chống view file user.json
+# set file mặc định là login.php
+
+#DirectoryIndex login.php
+
+#Options -Indexes 
+
+#<Files "user.json">
+#deny from all
+#</Files>
+
