@@ -56,14 +56,14 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
         $rePass = "";
     }
 
-    if(isset($_POST['g-recaptcha-response'])){
+    if (isset($_POST['g-recaptcha-response'])) {
         $secretKey  = '6Lf-j1YeAAAAAAwQIaCoZQ8IYNEPzAit0OLtvvDO';
         $response   = $_POST['g-recaptcha-response'];
         $remoteIP   = $_SERVER['REMOTE_ADDR'];
         $url        = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$response&remoteip=$remoteIP";
         $data       = file_get_contents($url);
         $row        = json_decode($data, true);
-        if($row['success'] == false){
+        if ($row['success'] == false) {
             $error['g-recaptcha'] = "<i style='padding-left:5px; font-size: 13px; color: red'>Vui lòng xác thực captcha!</i>";
         }
     }
@@ -81,7 +81,7 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
             exit();
         } else {
             $passWord = md5($passWord);
-            $query = "INSERT INTO `user`(`name`, `username`, `email`, `password`) VALUES ('".$name."', '".$userName."', '".$email."', '".$passWord."')";
+            $query = "INSERT INTO `user`(`name`, `username`, `email`, `password`) VALUES ('" . $name . "', '" . $userName . "', '" . $email . "', '" . $passWord . "')";
             $db->query($query);
             $_SESSION['Register_success'] = 'Đăng ký thành công!';
             mysqli_free_result($resultSQL);
@@ -102,6 +102,14 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
         box-sizing: border-box;
         border: none;
         border-bottom: 1px solid black;
+    }
+
+    /* Custom add-on icon in input-field */
+    .icon-add-on {
+        cursor: pointer;
+        position: absolute;
+        right: 0px;
+        bottom: 10px;
     }
 </style>
 
@@ -129,6 +137,7 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
                             </div>
                         </div>
 
+                        <!-- User name -->
                         <div class="col-12">
                             <div class="form-group row">
                                 <label for="icon_user" class="col-sm-1 col-form-label"><img style="width: 24px" src="images/icons/user.png" alt="icon_user"></label>
@@ -139,6 +148,7 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
                             </div>
                         </div>
 
+                        <!-- Email -->
                         <div class="col-12">
                             <div class="form-group row">
                                 <label for="icon_email" class="col-sm-1 col-form-label"><img style="width: 23px" src="images/icons/email.png" alt="icon_email"></label>
@@ -149,21 +159,30 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
                             </div>
                         </div>
 
+                        <!-- Password -->
                         <div class="col-12">
                             <div class="form-group row">
                                 <label for="icon_pass" class="col-sm-1 col-form-label"><img style="width: 23px" src="images/icons/locked.png" alt="icon_pass"></label>
                                 <div class="col-sm-10">
-                                    <input type="password" name="pass_word" class="form-control-plaintext ms-2" autocomplete="off" style="outline: none;" value="<?= @$_SESSION['password'] ?>" placeholder="Mật khẩu" />
+                                    <div class="form-group" style="position: relative;">
+                                        <input type="password" name="pass_word" class="form-control-plaintext ms-2" autocomplete="off" id="password" style="outline: none;" value="<?= @$_SESSION['password'] ?>" placeholder="Mật khẩu" />
+                                        <i class="bi bi-eye-slash icon-add-on" id="togglePassword"></i>
+                                    </div>
                                     <?= @$error['pass_word'] ?>
                                 </div>
+
                             </div>
                         </div>
 
+                        <!-- RePassword -->
                         <div class="col-12">
                             <div class="form-group row">
                                 <label for="icon_repass" class="col-sm-1 col-form-label"><img style="width: 23px" src="images/icons/unlocked.png" alt="icon_repass"></label>
                                 <div class="col-sm-10">
-                                    <input type="password" name="re_pass" class="form-control-plaintext ms-2" autocomplete="off" style="outline: none;" value="<?= @$rePass ?>" placeholder="Nhập lại mật khẩu" />
+                                    <div class="form-group" style="position: relative;">
+                                        <input type="password" name="re_pass" class="form-control-plaintext ms-2" autocomplete="off" id="repass" style="outline: none;" value="<?= @$rePass ?>" placeholder="Nhập lại mật khẩu" />
+                                        <i class="bi bi-eye-slash icon-add-on" id="toggleRepass"></i>
+                                    </div>
                                     <?= @$error['re_pass']; ?>
                                 </div>
                             </div>
@@ -189,7 +208,7 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
 </body>
 <?php session_destroy(); ?>
 
-<!-- script Tooltip bootstrap 5 -->
+<!-- script -->
 <script type="text/javascript">
     $(document).ready(function() {
         // Tooltip
@@ -199,5 +218,31 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
         $("#exist-alert").fadeTo(3000, 500).slideUp(500, function() {
             $("#exist-alert").slideUp(500);
         });
+    });
+
+    //---------- Toggle show/hide password ---------- 
+    const togglePassword = document.querySelector("#togglePassword");
+    const password = document.querySelector("#password");
+
+    togglePassword.addEventListener("click", function(){
+        // set type for atttribute ==> text/password
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+
+        // set toggle icon
+        togglePassword.classList.toggle("bi-eye");
+    });
+
+    //---------- Toggle show/hide Re-password ---------- 
+    const toggleRepass = document.querySelector("#toggleRepass");
+    const repass = document.querySelector("#repass");
+
+    toggleRepass.addEventListener("click", function(){
+        // set type for atttribute ==> text/password
+        const type = repass.getAttribute("type") === "password" ? "text" : "password";
+        repass.setAttribute("type", type);
+
+        // set toggle icon
+        toggleRepass.classList.toggle("bi-eye");
     });
 </script>
