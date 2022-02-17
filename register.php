@@ -190,8 +190,10 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
 
                         <!-- Recaptcha -->
                         <div class="col-12">
-                            <div class="g-recaptcha" data-sitekey="6Lf-j1YeAAAAAFb3o5-HWAktD9cVyg30Cvpoktka"></div>
-                            <?= @$error['g-recaptcha']; ?>
+                            <div>
+                                <div class="g-recaptcha" data-sitekey="6Lf-j1YeAAAAAFb3o5-HWAktD9cVyg30Cvpoktka"></div>
+                                <?= @$error['g-recaptcha']; ?>
+                            </div>
                         </div>
 
                         <div class="d-grid gap-2 col-12 mt-4">
@@ -224,7 +226,7 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
     const togglePassword = document.querySelector("#togglePassword");
     const password = document.querySelector("#password");
 
-    togglePassword.addEventListener("click", function(){
+    togglePassword.addEventListener("click", function() {
         // set type for atttribute ==> text/password
         const type = password.getAttribute("type") === "password" ? "text" : "password";
         password.setAttribute("type", type);
@@ -237,7 +239,7 @@ if (isset($_POST['name']) && isset($_POST['user_name']) && isset($_POST['email']
     const toggleRepass = document.querySelector("#toggleRepass");
     const repass = document.querySelector("#repass");
 
-    toggleRepass.addEventListener("click", function(){
+    toggleRepass.addEventListener("click", function() {
         // set type for atttribute ==> text/password
         const type = repass.getAttribute("type") === "password" ? "text" : "password";
         repass.setAttribute("type", type);
